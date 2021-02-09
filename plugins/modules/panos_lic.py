@@ -74,6 +74,8 @@ licenses:
 """
 
 
+import time
+
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.paloaltonetworks.panos.plugins.module_utils.panos import (
     get_connection,
@@ -126,6 +128,8 @@ def main():
         else:
             try:
                 parent.activate_feature_using_authorization_code(auth_code)
+                time.sleep(30)
+                parent.syncreboot(interval=30)
             except PanDeviceError as e:
                 module.fail_json(msg="Failed authcode apply: {0}".format(e))
 
